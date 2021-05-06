@@ -1,0 +1,14 @@
+[package]
+name = "gut-cert-check"
+version = "0.1.0"
+authors = ["Jared De La Cruz <jared@jareddlc.com>"]
+edition = "2018"
+
+[lib]
+name = "_gut_cert_check"
+crate-type = ["cdylib"]
+
+[dependencies]
+openssl = "0.10"
+openssl-sys = "0.9"
+
