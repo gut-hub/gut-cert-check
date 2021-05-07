@@ -12,3 +12,7 @@ crate-type = ["cdylib"]
 openssl = "0.10"
 openssl-sys = "0.9"
 
+[profile.release]
+codegen-units = 1
+opt-level = 'z'
+lto = true
