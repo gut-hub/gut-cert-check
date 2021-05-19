@@ -5,10 +5,11 @@ authors = ["Jared De La Cruz <jared@jareddlc.com>"]
 edition = "2018"
 
 [lib]
-name = "_gut_cert_check"
+name = "gut_cert_check"
 crate-type = ["cdylib"]
 
 [dependencies]
+gut-plugin = "0.1"
 openssl = "0.10"
 openssl-sys = "0.9"
 
