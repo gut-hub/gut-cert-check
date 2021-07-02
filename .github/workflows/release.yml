@@ -18,31 +18,11 @@ jobs:
     - name: Build
       run: cargo build --release
 
-    - name: Release
-      uses: "marvinpinto/action-automatic-releases@latest"
+    - name: Upload Linux Artifact
+      uses: actions/upload-artifact@v2
       with:
-        repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        automatic_release_tag: "latest"
-        prerelease: false
-        files: target/release/libgut_cert_check.so
-
-  build_windows:
-    runs-on: windows-latest
-
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-
-    - name: Build
-      run: cargo build --release
-
-    - name: Release
-      uses: "marvinpinto/action-automatic-releases@latest"
-      with:
-        repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        automatic_release_tag: "latest"
-        prerelease: false
-        files: target\release\libgut_cert_check.dll
+        name: linux-binary
+        path: target/release/libgut_cert_check.so
 
   build_macos:
     runs-on: macos-latest
@@ -54,10 +34,32 @@ jobs:
     - name: Build
       run: cargo build --release
 
+    - name: Upload MacOS Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: macos-binary
+        path: target/release/libgut_cert_check.dylib
+
+  release_all:
+    runs-on: ubuntu-latest
+    needs: [build_linux, build_macos]
+
+    steps:
+    - name: Download Linux Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: linux-binary
+    - name: Download MacOS Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: macos-binary
+
     - name: Release
       uses: "marvinpinto/action-automatic-releases@latest"
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         automatic_release_tag: "latest"
         prerelease: false
-        files: target/release/libgut_cert_check.dylib
+        files: |
+            libgut_cert_check.so
+            libgut_cert_check.dylib
