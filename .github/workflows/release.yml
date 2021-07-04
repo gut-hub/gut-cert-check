@@ -34,17 +34,12 @@ jobs:
     - name: Deps
       run: choco install --yes openssl
 
-    - name: OPENSSL_LIB_DIR
-      run: echo "OPENSSL_LIB_DIR=C:\Program Files\OpenSSL-Win64\lib" >> $GITHUB_ENV
-
-    - name: OPENSSL_INCLUDE_DIR
-      run: echo "OPENSSL_INCLUDE_DIR=C:\Program Files\OpenSSL-Win64\include" >> $GITHUB_ENV
-
-    - name: OPENSSL_DIR
-      run: echo "OPENSSL_DIR=C:\Program Files\OpenSSL-Win64" >> $GITHUB_ENV
-
     - name: Build
-      run: cargo build --release
+      run: |
+        $env:OPENSSL_LIB_DIR="C:\Program Files\OpenSSL-Win64\lib"
+        $env:OPENSSL_INCLUDE_DIR="C:\Program Files\OpenSSL-Win64\include"
+        $env:OPENSSL_DIR="C:\Program Files\OpenSSL-Win64"
+        cargo build --release
 
     - name: Upload Windows Artifact
       uses: actions/upload-artifact@v2
