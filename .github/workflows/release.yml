@@ -45,7 +45,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: windows-binary
-        path: target\release\libgut_cert_check.dll
+        path: target\release\gut_cert_check.dll
 
   build_macos:
     runs-on: macos-latest
@@ -89,5 +89,5 @@ jobs:
         prerelease: false
         files: |
             libgut_cert_check.so
-            libgut_cert_check.dll
+            gut_cert_check.dll
             libgut_cert_check.dylib
