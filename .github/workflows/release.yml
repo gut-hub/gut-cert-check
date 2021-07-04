@@ -70,7 +70,7 @@ jobs:
 
   release_all:
     runs-on: ubuntu-latest
-    needs: [build_linux, windows-latest, build_macos]
+    needs: [build_linux, build_windows, build_macos]
 
     steps:
     - name: Download Linux Artifact
