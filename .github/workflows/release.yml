@@ -47,7 +47,7 @@ jobs:
         name: windows-binary
         path: target\release\gut_cert_check.dll
 
-  build_macos:
+  build_macos_x86:
     runs-on: macos-latest
 
     steps:
@@ -57,15 +57,37 @@ jobs:
     - name: Build
       run: cargo build --release
 
+    - name: Rename binary
+      run: mv target/release/libgut_cert_check.dylib target/release/libgut_cert_check-x86.dylib
+
     - name: Upload MacOS Artifact
       uses: actions/upload-artifact@v2
       with:
-        name: macos-binary
-        path: target/release/libgut_cert_check.dylib
+        name: macos-x86-binary
+        path: target/release/libgut_cert_check-x86.dylib
+
+  build_macos_aarch64:
+    runs-on: macos-14
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Build
+      run: cargo build --release
+
+    - name: Rename binary
+      run: mv target/release/libgut_cert_check.dylib target/release/libgut_cert_check-aarch64.dylib
+
+    - name: Upload MacOS Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: macos-aarch64-binary
+        path: target/release/libgut_cert_check-aarch64.dylib
 
   release_all:
     runs-on: ubuntu-latest
-    needs: [build_linux, build_windows, build_macos]
+    needs: [build_linux, build_windows, build_macos_x86, build_macos_aarch64]
 
     steps:
     - name: Download Linux Artifact
@@ -76,10 +98,14 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: windows-binary
-    - name: Download MacOS Artifact
+    - name: Download MacOS (x86) Artifact
       uses: actions/download-artifact@v2
       with:
-        name: macos-binary
+        name: macos-x86-binary
+    - name: Download MacOS (Arm64) Artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: macos-aarch64-binary
 
     - name: Release
       uses: "marvinpinto/action-automatic-releases@latest"
@@ -90,4 +116,5 @@ jobs:
         files: |
             libgut_cert_check.so
             gut_cert_check.dll
-            libgut_cert_check.dylib
+            libgut_cert_check-x86.dylib
+            libgut_cert_check-aarch64.dylib
