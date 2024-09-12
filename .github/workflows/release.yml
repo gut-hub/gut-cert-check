@@ -34,12 +34,15 @@ jobs:
     - name: Deps
       run: choco install --yes openssl
 
+    - name: Deps (Windows)
+    - run: echo "VCPKG_ROOT=$env:VCPKG_INSTALLATION_ROOT" | Out-File -FilePath $env:GITHUB_ENV -Append
+    - run: vcpkg install openssl:x64-windows-static-md
+
     - name: Build
       run: |
         $env:OPENSSL_LIB_DIR="C:\Program Files\OpenSSL\lib"
         $env:OPENSSL_INCLUDE_DIR="C:\Program Files\OpenSSL\include"
         $env:OPENSSL_DIR="C:\Program Files\OpenSSL"
-        $env:OPENSSL_STATIC="true"
         cargo build --release
 
     - name: Upload Windows Artifact
