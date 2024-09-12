@@ -39,6 +39,7 @@ jobs:
         $env:OPENSSL_LIB_DIR="C:\Program Files\OpenSSL\lib"
         $env:OPENSSL_INCLUDE_DIR="C:\Program Files\OpenSSL\include"
         $env:OPENSSL_DIR="C:\Program Files\OpenSSL"
+        $env:OPENSSL_STATIC="true"
         cargo build --release
 
     - name: Upload Windows Artifact
