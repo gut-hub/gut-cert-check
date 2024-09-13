@@ -31,19 +31,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Deps
-      run: choco install --yes openssl
-
-    - name: Test 1
-      run: |
-        cd "C:\Program Files\OpenSSL-Win64\lib"
-        dir
-
     - name: Build
       run: |
-        $env:OPENSSL_LIB_DIR="C:\Program Files\OpenSSL-Win64\lib"
-        $env:OPENSSL_INCLUDE_DIR="C:\Program Files\OpenSSL-Win64\include"
-        $env:OPENSSL_DIR="C:\Program Files\OpenSSL-Win64"
+        $env:OPENSSL_LIB_DIR="C:\Program Files\OpenSSL\lib"
+        $env:OPENSSL_INCLUDE_DIR="C:\Program Files\OpenSSL\include"
+        $env:OPENSSL_DIR="C:\Program Files\OpenSSL"
         cargo build --release
 
     - name: Upload Windows Artifact

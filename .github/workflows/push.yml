@@ -1,23 +1,28 @@
-name: Release
+name: Push
 
-on: push
+on: 
+  push:
+    branches-ignore: [ main ]
+
+env:
+  CARGO_TERM_COLOR: always
 
 jobs:
-  # build_linux:
-  #   runs-on: ubuntu-latest
+  build_linux:
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #   - name: Checkout
-  #     uses: actions/checkout@v4
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
 
-  #   - name: Build
-  #     run: cargo build --release
+    - name: Build
+      run: cargo build --release
 
-  #   - name: Upload Linux Artifact
-  #     uses: actions/upload-artifact@v4
-  #     with:
-  #       name: linux-binary
-  #       path: target/release/libgut_cert_check.so
+    - name: Upload Linux Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: linux-binary
+        path: target/release/libgut_cert_check.so
 
   build_windows:
     runs-on: windows-2019
@@ -26,19 +31,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Deps
-      run: choco install --yes openssl
-
-    - name: Test 1
-      run: |
-        cd "C:\Program Files\OpenSSL-Win64\lib"
-        dir
-
     - name: Build
       run: |
-        $env:OPENSSL_LIB_DIR="C:\Program Files\OpenSSL-Win64\lib"
-        $env:OPENSSL_INCLUDE_DIR="C:\Program Files\OpenSSL-Win64\include"
-        $env:OPENSSL_DIR="C:\Program Files\OpenSSL-Win64"
+        $env:OPENSSL_LIB_DIR="C:\Program Files\OpenSSL\lib"
+        $env:OPENSSL_INCLUDE_DIR="C:\Program Files\OpenSSL\include"
+        $env:OPENSSL_DIR="C:\Program Files\OpenSSL"
         cargo build --release
 
     - name: Upload Windows Artifact
@@ -47,40 +44,40 @@ jobs:
         name: windows-binary
         path: target\release\gut_cert_check.dll
 
-  # build_macos_x86:
-  #   runs-on: macos-latest
+  build_macos_x86:
+    runs-on: macos-latest
 
-  #   steps:
-  #   - name: Checkout
-  #     uses: actions/checkout@v4
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
 
-  #   - name: Build
-  #     run: cargo build --release
+    - name: Build
+      run: cargo build --release
 
-  #   - name: Rename binary
-  #     run: mv target/release/libgut_cert_check.dylib target/release/libgut_cert_check-x86.dylib
+    - name: Rename binary
+      run: mv target/release/libgut_cert_check.dylib target/release/libgut_cert_check-x86.dylib
 
-  #   - name: Upload MacOS Artifact
-  #     uses: actions/upload-artifact@v4
-  #     with:
-  #       name: macos-x86-binary
-  #       path: target/release/libgut_cert_check-x86.dylib
+    - name: Upload MacOS Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: macos-x86-binary
+        path: target/release/libgut_cert_check-x86.dylib
 
-  # build_macos_aarch64:
-  #   runs-on: macos-14
+  build_macos_aarch64:
+    runs-on: macos-14
 
-  #   steps:
-  #   - name: Checkout
-  #     uses: actions/checkout@v4
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
 
-  #   - name: Build
-  #     run: cargo build --release
+    - name: Build
+      run: cargo build --release
 
-  #   - name: Rename binary
-  #     run: mv target/release/libgut_cert_check.dylib target/release/libgut_cert_check-aarch64.dylib
+    - name: Rename binary
+      run: mv target/release/libgut_cert_check.dylib target/release/libgut_cert_check-aarch64.dylib
 
-  #   - name: Upload MacOS Artifact
-  #     uses: actions/upload-artifact@v4
-  #     with:
-  #       name: macos-aarch64-binary
-  #       path: target/release/libgut_cert_check-aarch64.dylib
+    - name: Upload MacOS Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: macos-aarch64-binary
+        path: target/release/libgut_cert_check-aarch64.dylib
