@@ -36,7 +36,7 @@ jobs:
 
     - name: Test 1
       run: |
-        cd C:\Program Files\OpenSSL\lib
+        cd "C:\Program Files\OpenSSL\lib"
         dir
 
     - name: Build
