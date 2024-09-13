@@ -25,7 +25,7 @@ jobs:
         path: target/release/libgut_cert_check.so
 
   build_windows:
-    runs-on: windows-latest
+    runs-on: windows-2019
 
     steps:
     - name: Checkout
@@ -36,14 +36,14 @@ jobs:
 
     - name: Test 1
       run: |
-        cd "C:\Program Files\OpenSSL\lib"
+        cd "C:\Program Files\OpenSSL-Win64\lib"
         dir
 
     - name: Build
       run: |
-        $env:OPENSSL_LIB_DIR="C:\Program Files\OpenSSL\lib"
-        $env:OPENSSL_INCLUDE_DIR="C:\Program Files\OpenSSL\include"
-        $env:OPENSSL_DIR="C:\Program Files\OpenSSL"
+        $env:OPENSSL_LIB_DIR="C:\Program Files\OpenSSL-Win64\lib"
+        $env:OPENSSL_INCLUDE_DIR="C:\Program Files\OpenSSL-Win64\include"
+        $env:OPENSSL_DIR="C:\Program Files\OpenSSL-Win64"
         cargo build --release
 
     - name: Upload Windows Artifact
