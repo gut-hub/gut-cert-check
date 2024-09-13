@@ -34,10 +34,10 @@ jobs:
     - name: Deps
       run: choco install --yes openssl
 
-    - name: Deps (Windows)
+    - name: Test 1
       run: |
-        echo "VCPKG_ROOT=$env:VCPKG_INSTALLATION_ROOT" | Out-File -FilePath $env:GITHUB_ENV -Append
-        vcpkg install openssl:x64-windows-static-md
+        cd C:\Program Files\OpenSSL\lib
+        dir
 
     - name: Build
       run: |
