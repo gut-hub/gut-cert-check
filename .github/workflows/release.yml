@@ -1,4 +1,4 @@
-name: Release
+name: Release gut_cert_check
 
 on:
   push:
@@ -8,110 +8,7 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build_linux:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-
-    - name: Build
-      run: cargo build --release
-
-    - name: Upload Linux Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: linux-binary
-        path: target/release/libgut_cert_check.so
-
-  build_windows:
-    runs-on: windows-2019
-
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-
-    - name: Build
-      run: |
-        $env:OPENSSL_LIB_DIR="C:\Program Files\OpenSSL\lib"
-        $env:OPENSSL_INCLUDE_DIR="C:\Program Files\OpenSSL\include"
-        $env:OPENSSL_DIR="C:\Program Files\OpenSSL"
-        cargo build --release
-
-    - name: Upload Windows Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: windows-binary
-        path: target\release\gut_cert_check.dll
-
-  build_macos_x86:
-    runs-on: macos-latest
-
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-
-    - name: Build
-      run: cargo build --release
-
-    - name: Rename binary
-      run: mv target/release/libgut_cert_check.dylib target/release/libgut_cert_check-x86.dylib
-
-    - name: Upload MacOS Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: macos-x86-binary
-        path: target/release/libgut_cert_check-x86.dylib
-
-  build_macos_aarch64:
-    runs-on: macos-14
-
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-
-    - name: Build
-      run: cargo build --release
-
-    - name: Rename binary
-      run: mv target/release/libgut_cert_check.dylib target/release/libgut_cert_check-aarch64.dylib
-
-    - name: Upload MacOS Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: macos-aarch64-binary
-        path: target/release/libgut_cert_check-aarch64.dylib
-
-  release_all:
-    runs-on: ubuntu-latest
-    needs: [build_linux, build_windows, build_macos_x86, build_macos_aarch64]
-
-    steps:
-    - name: Download Linux Artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: linux-binary
-    - name: Download Windows Artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: windows-binary
-    - name: Download MacOS (x86) Artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: macos-x86-binary
-    - name: Download MacOS (Arm64) Artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: macos-aarch64-binary
-
-    - name: Release
-      uses: "marvinpinto/action-automatic-releases@latest"
-      with:
-        repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        automatic_release_tag: "latest"
-        prerelease: false
-        files: |
-            libgut_cert_check.so
-            gut_cert_check.dll
-            libgut_cert_check-x86.dylib
-            libgut_cert_check-aarch64.dylib
+  gut-plugin-release:
+    uses: gut-hub/.github/tree/main/.github/workflows/gut-plugin-release.yml@main
+    with:
+      plugin-name: gut_cert_check
