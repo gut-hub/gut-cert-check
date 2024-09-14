@@ -11,6 +11,11 @@ fn cert_check(ptr: *mut c_char) {
     let c_string = unsafe { CString::from_raw(ptr) };
     let str_from_host = c_string.to_str().unwrap();
 
+    if str_from_host.is_empty() {
+        println!("Please provide a domain to check for cert.");
+        return;
+    }
+
     let context = {
         let mut ctx = SslContext::builder(SslMethod::tls()).unwrap();
         ctx.set_verify(SslVerifyMode::empty());
