@@ -9,6 +9,6 @@ env:
 
 jobs:
   gut-plugin-release:
-    uses: gut-hub/.github/tree/main/.github/workflows/gut-plugin-release.yml@main
+    uses: gut-hub/workflows/.github/workflows/gut-plugin-release.yml@main
     with:
       plugin-name: gut_cert_check
